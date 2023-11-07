@@ -1,0 +1,19 @@
+{
+    "development": {
+      "username": "dev",
+      "password": "dev",
+      "database": "dev",
+      "host": "db",
+      "dialect": "postgres",
+      "timestamps": false,
+      "freezeTableName": true,
+      "logging": false
+    },
+    "production": {
+      "username": "for_prod_use",
+      "password": "defaultpasswordbutnot",
+      "database": "prod",
+      "host": "db",
+      "dialect": "postgres"
+    }
+  }
