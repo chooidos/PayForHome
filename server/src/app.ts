@@ -1,5 +1,5 @@
 import express, { Application } from "express";
-import sequelize from "./models/init";
+import db from "./models";
 
 const app: Application = express();
 
@@ -10,11 +10,11 @@ app.use(
   }),
 );
 
-const PORT = 5000;
+const PORT = process.env.SERVER_PORT || 5000;
 
 async function start() {
   try {
-    await sequelize
+    await db.sequelize
       .sync()
       .then(() => {
         app.listen(PORT, () =>

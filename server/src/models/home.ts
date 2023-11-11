@@ -1,13 +1,46 @@
-import { Sequelize, DataTypes } from "sequelize";
+import { Model, UUIDV4 } from "sequelize";
 
-export default (sequelize: Sequelize, DataTypes: DataTypes) => {
-  const Home = sequelize.define(
-    "home",
+interface HomeAttributes {
+  id: string;
+  name: string;
+  country?: string;
+  city?: string;
+  address?: string;
+  email?: string;
+}
+
+const Home = (sequelize: any, DataTypes: any) => {
+  class Home extends Model<HomeAttributes> implements HomeAttributes {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+
+    id: string;
+    name: string;
+    country?: string;
+    city?: string;
+    address?: string;
+    email?: string;
+
+    static associate(models: any) {
+      // define association here
+      Home.belongsToMany(models.Utilities, {
+        through: "Home_Utilities",
+      });
+    }
+  }
+  Home.init(
     {
       id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.UUID,
+        defaultValue: UUIDV4,
+        allowNull: false,
         primaryKey: true,
+      },
+      name: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
       country: {
@@ -19,18 +52,17 @@ export default (sequelize: Sequelize, DataTypes: DataTypes) => {
       address: {
         type: DataTypes.STRING,
       },
+      email: {
+        type: DataTypes.STRING,
+      },
     },
     {
-      timestamps: false,
-      freezeTableName: true,
+      sequelize,
+      modelName: "Home",
     },
   );
 
-  Home.associate = (models) => {
-    Home.hasMany(models.utilities, {
-      foreignKey: "home_id",
-      onDelete: "CASCADE",
-    });
-  };
   return Home;
 };
+
+export default Home;
