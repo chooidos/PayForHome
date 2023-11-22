@@ -1,4 +1,5 @@
 import express, { Application } from "express";
+
 import db from "./models";
 
 const app: Application = express();

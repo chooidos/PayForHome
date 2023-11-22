@@ -1,13 +1,13 @@
 import { Model, UUIDV4 } from "sequelize";
 
-interface UtilitiesAttributes {
+export interface UtilityAttributes {
   id: string;
   name: string;
   isCountable: boolean;
 }
 
-const Utilities = (sequelize: any, DataTypes: any) => {
-  class Utilities extends Model implements UtilitiesAttributes {
+const Utility = (sequelize: any, DataTypes: any) => {
+  class Utility extends Model implements UtilityAttributes {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -20,12 +20,12 @@ const Utilities = (sequelize: any, DataTypes: any) => {
 
     static associate(models: any) {
       // define association here
-      Utilities.belongsToMany(models.Home, {
-        through: "Home_Utilities",
+      Utility.belongsToMany(models.Home, {
+        through: "HomeUtilityAssignment",
       });
     }
   }
-  Utilities.init(
+  Utility.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -45,10 +45,10 @@ const Utilities = (sequelize: any, DataTypes: any) => {
     },
     {
       sequelize,
-      modelName: "Utilities",
+      modelName: "Utility",
     },
   );
-  return Utilities;
+  return Utility;
 };
 
-export default Utilities;
+export default Utility;

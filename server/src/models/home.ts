@@ -1,6 +1,6 @@
 import { Model, UUIDV4 } from "sequelize";
 
-interface HomeAttributes {
+export interface HomeAttributes {
   id: string;
   name: string;
   country?: string;
@@ -26,8 +26,8 @@ const Home = (sequelize: any, DataTypes: any) => {
 
     static associate(models: any) {
       // define association here
-      Home.belongsToMany(models.Utilities, {
-        through: "Home_Utilities",
+      Home.belongsToMany(models.Utility, {
+        through: "HomeUtilityAssignment",
       });
     }
   }
