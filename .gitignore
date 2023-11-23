@@ -106,5 +106,6 @@ dist
 .eslintrc
 .prettierrc
 .eslintrc.json
+.vscode
 
 data/

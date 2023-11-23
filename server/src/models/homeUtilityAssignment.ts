@@ -1,14 +1,14 @@
 import { Model, UUIDV4 } from "sequelize";
 
-export interface HomeUtilityAssignmentAttributes {
-  HomeId: string;
+export interface RealtyUtilityAssignmentAttributes {
+  RealtyId: string;
   UtilityId: string;
 }
 
-const HomeUtilityAssignment = (sequelize: any, DataTypes: any) => {
-  class HomeUtilityAssignment
+const RealtyUtilityAssignment = (sequelize: any, DataTypes: any) => {
+  class RealtyUtilityAssignment
     extends Model
-    implements HomeUtilityAssignmentAttributes
+    implements RealtyUtilityAssignmentAttributes
   {
     /**
      * Helper method for defining associations.
@@ -16,16 +16,16 @@ const HomeUtilityAssignment = (sequelize: any, DataTypes: any) => {
      * The `models/index` file will call this method automatically.
      */
 
-    HomeId!: string;
+    RealtyId!: string;
     UtilityId!: string;
 
     static associate(models: any) {
       // define association here
     }
   }
-  HomeUtilityAssignment.init(
+  RealtyUtilityAssignment.init(
     {
-      HomeId: {
+      RealtyId: {
         type: DataTypes.UUID,
       },
       UtilityId: {
@@ -34,10 +34,10 @@ const HomeUtilityAssignment = (sequelize: any, DataTypes: any) => {
     },
     {
       sequelize,
-      modelName: "HomeUtilityAssignment",
+      modelName: "RealtyUtilityAssignment",
     },
   );
-  return HomeUtilityAssignment;
+  return RealtyUtilityAssignment;
 };
 
-export default HomeUtilityAssignment;
+export default RealtyUtilityAssignment;

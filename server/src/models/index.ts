@@ -1,12 +1,22 @@
 import { readdirSync } from "fs";
 import { basename as _basename, join } from "path";
+import { ModelStatic } from "sequelize";
 import { DataTypes, Sequelize } from "sequelize";
 const basename = _basename(__filename);
 const env = process.env.NODE_ENV || "development";
 const config = require("./../config/db")["default"][env];
-const db: any = {};
 
-let sequelize: any;
+interface CustomModel extends ModelStatic<any> {
+  associate: (db: dbI) => void;
+}
+
+export interface dbI {
+  [key: string]: CustomModel;
+}
+
+const db: dbI = {};
+
+export let sequelize: Sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
@@ -37,8 +47,5 @@ Object.keys(db).forEach((modelName) => {
     db[modelName].associate(db);
   }
 });
-
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
 
 export default db;

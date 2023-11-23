@@ -1,37 +1,37 @@
+import { Sequelize } from "sequelize";
 import { Model, UUIDV4 } from "sequelize";
+import { dbI } from ".";
 
-export interface HomeAttributes {
+export interface RealtyAttributes {
   id: string;
   name: string;
   country?: string;
   city?: string;
   address?: string;
-  email?: string;
 }
 
-const Home = (sequelize: any, DataTypes: any) => {
-  class Home extends Model<HomeAttributes> implements HomeAttributes {
+const Realty = (sequelize: Sequelize, DataTypes: any) => {
+  class Realty extends Model<RealtyAttributes> implements RealtyAttributes {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
 
-    id: string;
-    name: string;
+    id!: string;
+    name!: string;
     country?: string;
     city?: string;
     address?: string;
-    email?: string;
 
-    static associate(models: any) {
+    static associate(models: dbI) {
       // define association here
-      Home.belongsToMany(models.Utility, {
-        through: "HomeUtilityAssignment",
+      Realty.belongsToMany(models.Utility, {
+        through: "RealtyUtilityAssignment",
       });
     }
   }
-  Home.init(
+  Realty.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -42,6 +42,7 @@ const Home = (sequelize: any, DataTypes: any) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       country: {
         type: DataTypes.STRING,
@@ -52,17 +53,14 @@ const Home = (sequelize: any, DataTypes: any) => {
       address: {
         type: DataTypes.STRING,
       },
-      email: {
-        type: DataTypes.STRING,
-      },
     },
     {
       sequelize,
-      modelName: "Home",
+      modelName: "Realty",
     },
   );
 
-  return Home;
+  return Realty;
 };
 
-export default Home;
+export default Realty;

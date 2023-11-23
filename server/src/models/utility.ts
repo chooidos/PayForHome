@@ -1,3 +1,4 @@
+import { Sequelize } from "sequelize";
 import { Model, UUIDV4 } from "sequelize";
 
 export interface UtilityAttributes {
@@ -6,7 +7,7 @@ export interface UtilityAttributes {
   isCountable: boolean;
 }
 
-const Utility = (sequelize: any, DataTypes: any) => {
+const Utility = (sequelize: Sequelize, DataTypes: any) => {
   class Utility extends Model implements UtilityAttributes {
     /**
      * Helper method for defining associations.
@@ -20,8 +21,8 @@ const Utility = (sequelize: any, DataTypes: any) => {
 
     static associate(models: any) {
       // define association here
-      Utility.belongsToMany(models.Home, {
-        through: "HomeUtilityAssignment",
+      Utility.belongsToMany(models.Realty, {
+        through: "RealtyUtilityAssignment",
       });
     }
   }
