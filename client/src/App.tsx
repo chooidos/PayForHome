@@ -1,14 +1,21 @@
-import { Box, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import RealtyForm from "./components/RealtyForm/RealtyForm";
+import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { actions } from './modules/realty/store';
+import RealtyBoard from './components/RealtyBoard/RealtyBoard';
 
 function App() {
   const defaultTheme = createTheme({
     palette: {
-      mode: "dark",
+      mode: 'dark',
     },
   });
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(actions.getAllRealty() as any);
+  }, []);
 
   return (
     // <BrowserRouter>
@@ -19,9 +26,7 @@ function App() {
     // </BrowserRouter >
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
-      <Box sx={{ display: "flex" }}>
-        <RealtyForm />
-      </Box>
+      <RealtyBoard />
     </ThemeProvider>
   );
 }

@@ -1,0 +1,1 @@
+export { fetchAllRealty } from "./fetchRealty";
