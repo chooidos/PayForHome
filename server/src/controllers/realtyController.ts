@@ -4,18 +4,19 @@ import { RealtyAttributes } from './../models/realty';
 import db from './../models';
 
 export const getAllRealty = async (req: Request, res: Response) => {
-  try {
-    const realty = await db.Realty.findAll({ attributes: { exclude: ['id'] } });
-    res.status(200).json([...realty]);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  db.Realty.findAll({ attributes: { exclude: ['id'] } })
+    .then((realty) => {
+      res.status(200).json([...realty]);
+    })
+    .catch((err: Error) => {
+      res.status(500).json({ error: err });
+    });
 };
 
 export const addRealty = async (req: Request, res: Response) => {
   const { name, country, city, address }: RealtyAttributes = req.body;
 
-  await db.Realty.create({
+  db.Realty.create({
     name,
     country,
     city,
@@ -29,8 +30,45 @@ export const addRealty = async (req: Request, res: Response) => {
     });
 };
 
-export const removeRealty = async (req: Request, res: Response) => {
-  const { name }: RealtyAttributes = req.body;
+export const editRealty = async (req: Request, res: Response) => {
+  const { name, country, city, address }: RealtyAttributes = req.body;
+  const editRealtyName = req.params.name;
 
-  // await db.Realty.
+  db.Realty.update(
+    {
+      name,
+      country,
+      city,
+      address,
+    },
+    {
+      where: {
+        name: editRealtyName,
+      },
+    },
+  )
+    .then(() => {
+      res.status(200).send({ message: 'Realty added successfully' });
+    })
+    .catch((err: Error) => {
+      res.status(500).send({ message: err });
+    });
+};
+
+export const removeRealty = async (req: Request, res: Response) => {
+  const name = req.params.name;
+  console.log('deliting realty');
+  console.log(name);
+
+  db.Realty.destroy({
+    where: {
+      name: name,
+    },
+  })
+    .then(() => {
+      res.status(200).send({ message: 'Realty deleted successfully' });
+    })
+    .catch((err: Error) => {
+      res.status(500).send({ error: err });
+    });
 };

@@ -1,21 +1,20 @@
+import axios from 'axios';
 import {
   Box,
   Button,
   Fade,
   Grid,
-  IconButton,
   Modal,
   Stack,
   Typography,
 } from '@mui/material';
 import RealtyInfoCard from '../RealtyInfoCard/RealtyInfoCard';
 import RealtyForm from '../RealtyForm/RealtyForm';
-import { Add, Cancel, Delete, Error } from '@mui/icons-material';
-import { useSelector } from 'react-redux';
-import { selectors } from '../../modules/realty/store';
+import { Add } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { actions, selectors } from '../../modules/realty/store';
 import { useState } from 'react';
 import { RealtyItem } from '../../modules/realty/types/realty';
-import axios from 'axios';
 import { api_server_url } from '../../shared/constants/serverType';
 
 const RealtyBoard: React.FC<any> = (props) => {
@@ -28,6 +27,7 @@ const RealtyBoard: React.FC<any> = (props) => {
     RealtyItem | undefined
   >(undefined);
 
+  const dispatch = useDispatch();
   const realtyList = useSelector(selectors.selectRealty);
 
   const realtyListArr = [];
@@ -56,18 +56,21 @@ const RealtyBoard: React.FC<any> = (props) => {
   };
 
   const handleDeleteRealty = async () => {
-    console.log(deleteRealtyItem);
-
     deleteRealtyItem &&
       axios
-        .delete(`${api_server_url}/api/realty:${deleteRealtyItem.name}`)
-        .then()
+        .delete(`${api_server_url}/api/realty/${deleteRealtyItem.name}`)
+        .then((res) => {
+          if (res.status === 200) {
+            handleCancelDeleteModal();
+            dispatch(actions.getAllRealty() as any);
+          }
+        })
         .catch((err) => console.log(err));
   };
 
   return (
     <>
-      <Grid container direction='row' spacing={2} p={2}>
+      <Grid container direction='row' spacing={2} p={2} justifyContent='center'>
         {realtyListArr.map((realty: string) => (
           <Grid key={realty} item xs='auto'>
             <RealtyInfoCard
@@ -93,7 +96,12 @@ const RealtyBoard: React.FC<any> = (props) => {
               p: 4,
             }}
           >
-            <Typography gutterBottom variant='h5' sx={{ mb: 2 }}>
+            <Typography
+              gutterBottom
+              variant='h5'
+              sx={{ mb: 2 }}
+              textAlign='center'
+            >
               Do you want to delete "{deleteRealtyItem?.name}"?
             </Typography>
             <Stack spacing={2} direction='row'>
@@ -101,17 +109,17 @@ const RealtyBoard: React.FC<any> = (props) => {
                 type='submit'
                 variant='outlined'
                 sx={{ width: '50%' }}
-                onClick={handleDeleteRealty}
+                onClick={handleCancelDeleteModal}
               >
-                Yes
+                No
               </Button>
               <Button
                 type='submit'
                 variant='outlined'
                 sx={{ width: '50%' }}
-                onClick={handleCancelDeleteModal}
+                onClick={handleDeleteRealty}
               >
-                No
+                Yes
               </Button>
             </Stack>
           </Box>

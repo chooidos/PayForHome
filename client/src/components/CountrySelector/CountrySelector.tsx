@@ -1,19 +1,27 @@
-import { Autocomplete, Box, TextField } from "@mui/material";
-import { CountryType, countries } from "../../shared/constants/countries";
-import { forwardRef } from "react";
+import { Autocomplete, Box, TextField } from '@mui/material';
+import { CountryType, countries } from '../../shared/constants/countries';
+import { forwardRef, useMemo } from 'react';
 
 const CountrySelector = forwardRef((props: any, ref) => {
+  const { defaultValue: propDefValue, ...others } = props;
+  const defaultValue = useMemo(
+    () => countries.filter((v) => v.label === propDefValue),
+    [countries, propDefValue],
+  );
+
   return (
     <Autocomplete
       ref={ref}
       autoHighlight
       disablePortal
+      defaultValue={defaultValue[0]}
       options={countries}
       getOptionLabel={(option: CountryType) => option.label}
       renderOption={(props, option: CountryType) => (
         <Box
+          key={option.code}
           component='li'
-          sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+          sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
           {...props}
         >
           <img
@@ -33,9 +41,9 @@ const CountrySelector = forwardRef((props: any, ref) => {
           label='Choose a country'
           inputProps={{
             ...params.inputProps,
-            autoComplete: "new-password", // disable autocomplete and autofill
+            autoComplete: 'new-password', // disable autocomplete and autofill
           }}
-          {...props}
+          {...others}
         />
       )}
     />

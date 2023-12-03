@@ -32,19 +32,30 @@ const RealtyForm: FC<RealtyFormProps> = (props) => {
   });
   const dispatch = useDispatch();
 
+  const handleSubmitSuccess = () => {
+    setErrors([]);
+    dispatch(actions.getAllRealty() as any);
+    onCancel && onCancel();
+  };
+
+  const handleSubmitError = (err: Error | AxiosError) => {
+    if (axios.isAxiosError(err)) {
+      setErrors(err.response?.data.message.errors);
+    }
+  };
+
   const onSubmit: SubmitHandler<RealtyItem> = async (data) => {
-    axios
-      .post(api_server_url + '/api/realty', data)
-      .then((res) => {
-        setErrors([]);
-        dispatch(actions.getAllRealty() as any);
-        onCancel && onCancel();
-      })
-      .catch((err: Error | AxiosError) => {
-        if (axios.isAxiosError(err)) {
-          setErrors(err.response?.data.message.errors);
-        }
-      });
+    const url = defaultValues
+      ? `${api_server_url}/api/realty/${defaultValues.name}`
+      : `${api_server_url}/api/realty`;
+
+    try {
+      defaultValues ? await axios.put(url, data) : await axios.post(url, data);
+
+      handleSubmitSuccess();
+    } catch (err: any) {
+      handleSubmitError(err);
+    }
   };
 
   return (
@@ -60,7 +71,10 @@ const RealtyForm: FC<RealtyFormProps> = (props) => {
           variant='standard'
           {...register('name', { required: true })}
         />
-        <CountrySelector {...register('country')} />
+        <CountrySelector
+          {...register('country')}
+          defaultValue={defaultValues?.country}
+        />
         <TextField label='City' variant='standard' {...register('city')} />
         <TextField
           label='Address'
