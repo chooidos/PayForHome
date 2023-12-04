@@ -5,7 +5,7 @@ import db from './../models';
 
 export const getAllRealty = async (req: Request, res: Response) => {
   db.Realty.findAll({ attributes: { exclude: ['id'] } })
-    .then((realty) => {
+    .then((realty: RealtyAttributes[]) => {
       res.status(200).json([...realty]);
     })
     .catch((err: Error) => {
@@ -48,7 +48,7 @@ export const editRealty = async (req: Request, res: Response) => {
     },
   )
     .then(() => {
-      res.status(200).send({ message: 'Realty added successfully' });
+      res.status(200).send({ message: 'Realty is eddited successfully' });
     })
     .catch((err: Error) => {
       res.status(500).send({ message: err });
@@ -57,8 +57,6 @@ export const editRealty = async (req: Request, res: Response) => {
 
 export const removeRealty = async (req: Request, res: Response) => {
   const name = req.params.name;
-  console.log('deliting realty');
-  console.log(name);
 
   db.Realty.destroy({
     where: {

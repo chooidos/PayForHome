@@ -1,8 +1,9 @@
-import express, { Application } from "express";
-import cors from "cors";
+import express, { Application } from 'express';
+import cors from 'cors';
 
-import { sequelize } from "./models";
-import realtyRouter from "./routes/realtyRoute";
+import { sequelize } from './models';
+import realtyRouter from './routes/realtyRoute';
+import utilityRouter from './routes/utilityRoute';
 
 const app: Application = express();
 
@@ -15,7 +16,8 @@ app.use(
   }),
 );
 
-app.use("/api/realty", realtyRouter);
+app.use('/api/realty', realtyRouter);
+app.use('/api/utility', utilityRouter);
 
 const PORT = process.env.SERVER_PORT || 5000;
 
@@ -30,7 +32,7 @@ async function start() {
       })
       .catch((err: Error) => console.error(err.message));
   } catch (e) {
-    console.log("Server Error", e.message);
+    console.log('Server Error', e.message);
     process.exit(1);
   }
 }

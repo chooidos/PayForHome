@@ -1,10 +1,13 @@
-import { Sequelize } from "sequelize";
-import { Model, UUIDV4 } from "sequelize";
+import { Sequelize } from 'sequelize';
+import { Model, UUIDV4 } from 'sequelize';
 
 export interface UtilityAttributes {
   id: string;
   name: string;
   isCountable: boolean;
+  isDeleted: string;
+  icon: string;
+  comment: string;
 }
 
 const Utility = (sequelize: Sequelize, DataTypes: any) => {
@@ -18,11 +21,14 @@ const Utility = (sequelize: Sequelize, DataTypes: any) => {
     id!: string;
     name!: string;
     isCountable!: boolean;
+    isDeleted!: string;
+    icon: string;
+    comment: string;
 
     static associate(models: any) {
       // define association here
       Utility.belongsToMany(models.Realty, {
-        through: "RealtyUtilityAssignment",
+        through: 'RealtyUtilityAssignment',
       });
     }
   }
@@ -43,10 +49,21 @@ const Utility = (sequelize: Sequelize, DataTypes: any) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
+      isDeleted: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      icon: {
+        type: DataTypes.STRING,
+      },
+      comment: {
+        type: DataTypes.STRING,
+      },
     },
     {
       sequelize,
-      modelName: "Utility",
+      modelName: 'Utility',
     },
   );
   return Utility;
