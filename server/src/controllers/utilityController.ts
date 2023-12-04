@@ -30,8 +30,13 @@ export const addUtility = async (req: Request, res: Response) => {
 };
 
 export const editUtility = async (req: Request, res: Response) => {
-  const { name, isCountable, isDeleted, icon, comment }: UtilityAttributes =
-    req.body;
+  const {
+    name,
+    isCountable,
+    isDeleted = false,
+    icon,
+    comment,
+  }: UtilityAttributes = req.body;
   const editUtilityName = req.params.name;
 
   db.Utility.update(

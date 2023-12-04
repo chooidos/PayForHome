@@ -5,7 +5,7 @@ export interface UtilityAttributes {
   id: string;
   name: string;
   isCountable: boolean;
-  isDeleted: string;
+  isDeleted: boolean;
   icon: string;
   comment: string;
 }
@@ -21,7 +21,7 @@ const Utility = (sequelize: Sequelize, DataTypes: any) => {
     id!: string;
     name!: string;
     isCountable!: boolean;
-    isDeleted!: string;
+    isDeleted!: boolean;
     icon: string;
     comment: string;
 

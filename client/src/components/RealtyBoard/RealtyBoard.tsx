@@ -70,7 +70,7 @@ const RealtyBoard: React.FC<any> = (props) => {
 
   return (
     <>
-      <Grid container direction='row' spacing={2} p={2} justifyContent='center'>
+      <Grid container direction='row' spacing={2} justifyContent='center'>
         {realtyListArr.map((realty: string) => (
           <Grid key={realty} item xs='auto'>
             <RealtyInfoCard
