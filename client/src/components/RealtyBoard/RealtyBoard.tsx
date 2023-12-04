@@ -8,14 +8,17 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import RealtyInfoCard from '../RealtyInfoCard/RealtyInfoCard';
-import RealtyForm from '../RealtyForm/RealtyForm';
 import { Add } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions, selectors } from '../../modules/realty/store';
 import { useState } from 'react';
+import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
+
+import RealtyInfoCard from '../RealtyInfoCard/RealtyInfoCard';
+import RealtyForm from '../RealtyForm/RealtyForm';
+import { actions, selectors } from '../../modules/realty/store';
 import { RealtyItem } from '../../modules/realty/types/realty';
 import { api_server_url } from '../../shared/constants/serverType';
+import { RootState } from '../../store';
 
 const RealtyBoard: React.FC<any> = (props) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -27,7 +30,7 @@ const RealtyBoard: React.FC<any> = (props) => {
     RealtyItem | undefined
   >(undefined);
 
-  const dispatch = useDispatch();
+  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
   const realtyList = useSelector(selectors.selectRealty);
 
   const realtyListArr = [];
@@ -62,7 +65,7 @@ const RealtyBoard: React.FC<any> = (props) => {
         .then((res) => {
           if (res.status === 200) {
             handleModalCancelDelete();
-            dispatch(actions.getAllRealty() as any);
+            dispatch(actions.getAllRealty());
           }
         })
         .catch((err) => console.log(err));

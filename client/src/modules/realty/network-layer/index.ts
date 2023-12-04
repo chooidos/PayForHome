@@ -1,1 +1,1 @@
-export { fetchAllRealty } from "./fetchRealty";
+export { fetchAllRealty } from './fetchRealty';

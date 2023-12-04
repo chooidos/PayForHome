@@ -1,1 +1,1 @@
-export * as realtyStore from "./store";
+export * as realtyStore from './store';

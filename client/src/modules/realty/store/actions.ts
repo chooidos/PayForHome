@@ -1,6 +1,7 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchAllRealty } from "../network-layer";
-import { RealtyItem } from "../types/realty";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
+import { fetchAllRealty } from '../network-layer';
+import { RealtyItem } from '../types/realty';
 
 export const getAllRealty = createAsyncThunk<
   RealtyItem[],
@@ -12,4 +13,4 @@ export const getAllRealty = createAsyncThunk<
       };
     };
   }
->("realty/fetchAllRealy", fetchAllRealty);
+>('realty/fetchAllRealy', fetchAllRealty);

@@ -1,6 +1,7 @@
-import axios from "axios";
-import { api_server_url } from "../../../shared/constants/serverType";
-import { RealtyItem } from "../types/realty";
+import axios from 'axios';
+
+import { api_server_url } from '../../../shared/constants/serverType';
+import { RealtyItem } from '../types/realty';
 
 export const fetchAllRealty = async () => {
   const response = await axios.get<RealtyItem[]>(

@@ -11,12 +11,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 
 import CountrySelector from '../CountrySelector/CountrySelector';
 import { api_server_url } from '../../shared/constants/serverType';
 import { RealtyItem } from '../../modules/realty/types/realty';
-import { useDispatch } from 'react-redux';
 import { actions } from '../../modules/realty/store';
+import { RootState } from '../../store';
 
 interface RealtyFormProps {
   defaultValues?: RealtyItem | undefined;
@@ -28,11 +30,11 @@ const RealtyForm: FC<RealtyFormProps> = ({ defaultValues, onCancel }) => {
   const { register, handleSubmit } = useForm<RealtyItem>({
     defaultValues,
   });
-  const dispatch = useDispatch();
+  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
 
   const handleSubmitSuccess = () => {
     setErrors([]);
-    dispatch(actions.getAllRealty() as any);
+    dispatch(actions.getAllRealty());
     onCancel && onCancel();
   };
 

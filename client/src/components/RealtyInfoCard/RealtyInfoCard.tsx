@@ -9,8 +9,9 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { RealtyItem } from '../../modules/realty/types/realty';
 import { Bolt, Delete, Edit, Info, Save } from '@mui/icons-material';
+
+import { RealtyItem } from '../../modules/realty/types/realty';
 
 interface RealtyInfoCardProps {
   realty: RealtyItem;

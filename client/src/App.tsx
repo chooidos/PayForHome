@@ -2,9 +2,12 @@ import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
+
 import { actions } from './modules/realty/store';
 import RealtyBoard from './components/RealtyBoard/RealtyBoard';
 import AppBar from './components/AppBar/App.Bar';
+import { RootState } from './store';
 
 function App() {
   const defaultTheme = createTheme({
@@ -12,10 +15,10 @@ function App() {
       mode: 'dark',
     },
   });
-  const dispatch = useDispatch();
+  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
 
   useEffect(() => {
-    dispatch(actions.getAllRealty() as any);
+    dispatch(actions.getAllRealty());
   }, []);
 
   return (

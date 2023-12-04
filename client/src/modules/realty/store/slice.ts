@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+
 import { RealtyItem } from '../types/realty';
 import { getAllRealty } from './actions';
 
