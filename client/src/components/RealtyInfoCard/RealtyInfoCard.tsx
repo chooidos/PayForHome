@@ -1,9 +1,6 @@
 import { FC } from 'react';
-
 import {
-  Badge,
   Box,
-  Button,
   Card,
   CardActions,
   CardContent,
@@ -21,8 +18,14 @@ interface RealtyInfoCardProps {
   onDelete?: (realty: RealtyItem) => void;
 }
 
-const RealtyInfoCard: FC<RealtyInfoCardProps> = (props) => {
-  const { realty, onEdit, onDelete } = props;
+const RealtyInfoCard: FC<RealtyInfoCardProps> = ({
+  realty,
+  onEdit,
+  onDelete,
+}) => {
+  const handleDelete = () => onDelete && onDelete(realty);
+  const handleEdit = () => onEdit && onEdit(realty);
+
   return (
     <Card sx={{ width: 300 }} raised>
       <CardContent>
@@ -36,27 +39,9 @@ const RealtyInfoCard: FC<RealtyInfoCardProps> = (props) => {
             <Typography gutterBottom variant='h5' component='div'>
               {realty.name}
             </Typography>
-            <Typography
-              sx={{ fontSize: 14 }}
-              color='text.secondary'
-              gutterBottom
-            >
-              Country: {realty.country || 'not set'}
-            </Typography>
-            <Typography
-              sx={{ fontSize: 14 }}
-              color='text.secondary'
-              gutterBottom
-            >
-              City: {realty.city || 'not set'}
-            </Typography>
-            <Typography
-              sx={{ fontSize: 14 }}
-              color='text.secondary'
-              gutterBottom
-            >
-              Address: {realty.address || 'not set'}
-            </Typography>
+            {renderProperty('Country', realty.country || 'not set')}
+            {renderProperty('City', realty.city || 'not set')}
+            {renderProperty('Address', realty.address || 'not set')}
           </Box>
           <Stack spacing={0.5} direction='row' useFlexGap flexWrap='wrap'>
             <Chip color='primary' icon={<Bolt />} label='asdasd' />
@@ -70,20 +55,12 @@ const RealtyInfoCard: FC<RealtyInfoCardProps> = (props) => {
           sx={{ width: '100%' }}
         >
           {onDelete && (
-            <IconButton
-              size='small'
-              color='primary'
-              onClick={() => onDelete(realty)}
-            >
+            <IconButton size='small' color='primary' onClick={handleDelete}>
               <Delete />
             </IconButton>
           )}
           {onEdit && (
-            <IconButton
-              size='small'
-              color='primary'
-              onClick={() => onEdit(realty)}
-            >
+            <IconButton size='small' color='primary' onClick={handleEdit}>
               <Edit />
             </IconButton>
           )}
@@ -95,5 +72,11 @@ const RealtyInfoCard: FC<RealtyInfoCardProps> = (props) => {
     </Card>
   );
 };
+
+const renderProperty = (label: string, value: string) => (
+  <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
+    {label}: {value}
+  </Typography>
+);
 
 export default RealtyInfoCard;

@@ -23,10 +23,8 @@ interface RealtyFormProps {
   onCancel?: () => void;
 }
 
-const RealtyForm: FC<RealtyFormProps> = (props) => {
-  const { defaultValues, onCancel } = props;
-  const [errors, setErrors] = useState([]);
-
+const RealtyForm: FC<RealtyFormProps> = ({ defaultValues, onCancel }) => {
+  const [errors, setErrors] = useState<string[]>([]);
   const { register, handleSubmit } = useForm<RealtyItem>({
     defaultValues,
   });

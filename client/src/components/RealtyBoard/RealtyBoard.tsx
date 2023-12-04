@@ -45,12 +45,12 @@ const RealtyBoard: React.FC<any> = (props) => {
     setIsFormOpen(false);
   };
 
-  const handleDeleteModal = (realty: RealtyItem) => {
+  const handleModalDelete = (realty: RealtyItem) => {
     setIsDeleteOpen(true);
     setDeleteRealtyItem(realtyList[realty.name]);
   };
 
-  const handleCancelDeleteModal = () => {
+  const handleModalCancelDelete = () => {
     setDeleteRealtyItem(undefined);
     setIsDeleteOpen(false);
   };
@@ -61,7 +61,7 @@ const RealtyBoard: React.FC<any> = (props) => {
         .delete(`${api_server_url}/api/realty/${deleteRealtyItem.name}`)
         .then((res) => {
           if (res.status === 200) {
-            handleCancelDeleteModal();
+            handleModalCancelDelete();
             dispatch(actions.getAllRealty() as any);
           }
         })
@@ -76,7 +76,7 @@ const RealtyBoard: React.FC<any> = (props) => {
             <RealtyInfoCard
               realty={realtyList[realty]}
               onEdit={handleEdit}
-              onDelete={handleDeleteModal}
+              onDelete={handleModalDelete}
             />
           </Grid>
         ))}
@@ -109,7 +109,7 @@ const RealtyBoard: React.FC<any> = (props) => {
                 type='submit'
                 variant='outlined'
                 sx={{ width: '50%' }}
-                onClick={handleCancelDeleteModal}
+                onClick={handleModalCancelDelete}
               >
                 No
               </Button>
