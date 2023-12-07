@@ -5,35 +5,35 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   Alert,
   Button,
-  CardContent,
+  Checkbox,
   Collapse,
+  FormControlLabel,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
-import CountrySelector from '../CountrySelector/CountrySelector';
 import { api_server_url } from '../../shared/constants/serverType';
-import { RealtyItem } from '../../modules/realty/types/realty';
-import { actions } from '../../modules/realty/store';
 import { AppDispatch } from '../../store';
+import { UtilityItem } from '../../modules/utilities/types/utility';
+import { actions } from '../../modules/utilities/store';
 
-interface RealtyFormProps {
-  defaultValues?: RealtyItem | undefined;
+interface UtilityFormProps {
+  defaultValues?: UtilityItem | undefined;
   onCancel?: () => void;
 }
 
-const RealtyForm: FC<RealtyFormProps> = ({ defaultValues, onCancel }) => {
+const UtilityForm: FC<UtilityFormProps> = ({ defaultValues, onCancel }) => {
   const [errors, setErrors] = useState<string[]>([]);
-  const { register, handleSubmit } = useForm<RealtyItem>({
+  const { register, handleSubmit } = useForm<UtilityItem>({
     defaultValues,
   });
   const dispatch: AppDispatch = useDispatch();
 
   const handleSubmitSuccess = () => {
     setErrors([]);
-    dispatch(actions.getAllRealty());
+    dispatch(actions.getAllUtilities());
     onCancel && onCancel();
   };
 
@@ -43,10 +43,12 @@ const RealtyForm: FC<RealtyFormProps> = ({ defaultValues, onCancel }) => {
     }
   };
 
-  const onSubmit: SubmitHandler<RealtyItem> = async (data) => {
+  const onSubmit: SubmitHandler<UtilityItem> = async (data) => {
+    console.log(data);
+
     const url = defaultValues
-      ? `${api_server_url}/api/realty/${defaultValues.name}`
-      : `${api_server_url}/api/realty`;
+      ? `${api_server_url}/api/utility/${defaultValues.name}`
+      : `${api_server_url}/api/utility`;
 
     try {
       defaultValues ? await axios.put(url, data) : await axios.post(url, data);
@@ -61,7 +63,7 @@ const RealtyForm: FC<RealtyFormProps> = ({ defaultValues, onCancel }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack direction='column' spacing={2}>
         <Typography gutterBottom variant='h5' component='div'>
-          {defaultValues ? 'Edit' : 'Add'} realty
+          {defaultValues ? 'Edit' : 'Add'} utility
         </Typography>
         <TextField
           error={errors.length > 0}
@@ -70,15 +72,14 @@ const RealtyForm: FC<RealtyFormProps> = ({ defaultValues, onCancel }) => {
           variant='standard'
           {...register('name', { required: true })}
         />
-        <CountrySelector
-          {...register('country')}
-          defaultValue={defaultValues?.country}
+        <FormControlLabel
+          control={<Checkbox {...register('isCountable')} />}
+          label='Measurable'
         />
-        <TextField label='City' variant='standard' {...register('city')} />
         <TextField
-          label='Address'
+          label='Comment'
           variant='standard'
-          {...register('address')}
+          {...register('comment')}
         />
         <Collapse in={errors.length > 0}>
           {errors.map((error: any) => (
@@ -113,4 +114,4 @@ const RealtyForm: FC<RealtyFormProps> = ({ defaultValues, onCancel }) => {
   );
 };
 
-export default RealtyForm;
+export default UtilityForm;

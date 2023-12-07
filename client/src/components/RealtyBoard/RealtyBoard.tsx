@@ -10,15 +10,14 @@ import {
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
-import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
+import { useEffect, useState } from 'react';
 
 import RealtyInfoCard from '../RealtyInfoCard/RealtyInfoCard';
 import RealtyForm from '../RealtyForm/RealtyForm';
 import { actions, selectors } from '../../modules/realty/store';
 import { RealtyItem } from '../../modules/realty/types/realty';
 import { api_server_url } from '../../shared/constants/serverType';
-import { RootState } from '../../store';
+import { AppDispatch } from '../../store';
 
 const RealtyBoard: React.FC<any> = (props) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -30,7 +29,7 @@ const RealtyBoard: React.FC<any> = (props) => {
     RealtyItem | undefined
   >(undefined);
 
-  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const realtyList = useSelector(selectors.selectRealty);
 
   const realtyListArr = [];
@@ -70,6 +69,10 @@ const RealtyBoard: React.FC<any> = (props) => {
         })
         .catch((err) => console.log(err));
   };
+
+  useEffect(() => {
+    dispatch(actions.getAllRealty());
+  }, []);
 
   return (
     <>
