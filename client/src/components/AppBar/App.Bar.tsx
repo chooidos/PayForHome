@@ -17,15 +17,23 @@ import {
   ListItemText,
   Toolbar,
   Typography,
+  useTheme,
 } from '@mui/material';
 import React, { FC, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+
+import { ColorModeContext } from '../../App';
 
 interface AppBarProps {
   children?: React.ReactNode;
 }
 
 const AppBar: FC<AppBarProps> = ({ children }) => {
+  const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
+
   const drawerWidth = 240;
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
   const handleDrawerToggle = () => {
@@ -75,9 +83,20 @@ const AppBar: FC<AppBarProps> = ({ children }) => {
           >
             <Menu />
           </IconButton>
-          <Typography variant='h6' noWrap component='div'>
+          <Typography variant='h6' noWrap component='div' sx={{ flexGrow: 1 }}>
             {menuItems.find((item) => item.url === location.pathname)?.name}
           </Typography>
+          <IconButton
+            sx={{ ml: 1 }}
+            onClick={colorMode.toggleColorMode}
+            color='inherit'
+          >
+            {theme.palette.mode === 'dark' ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
+          </IconButton>
         </Toolbar>
       </MuiAppBar>
       <Box

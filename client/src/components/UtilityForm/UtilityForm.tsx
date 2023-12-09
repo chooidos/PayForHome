@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
-import axios, { AxiosError } from 'axios';
-import { Cancel, Save } from '@mui/icons-material';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Cancel, Delete, Save } from '@mui/icons-material';
+import { useForm } from 'react-hook-form';
 import {
   Alert,
   Button,
@@ -14,10 +13,11 @@ import {
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
-import { api_server_url } from '../../shared/constants/serverType';
-import { AppDispatch } from '../../store';
 import { UtilityItem } from '../../modules/utilities/types/utility';
 import { actions } from '../../modules/utilities/store';
+import IconPicker, { iconsType } from '../IconPicker/IconPicker';
+import useFormData from '../../modules/hooks/network/useFormData';
+import { AppDispatch } from '../../store';
 
 interface UtilityFormProps {
   defaultValues?: UtilityItem | undefined;
@@ -26,37 +26,27 @@ interface UtilityFormProps {
 
 const UtilityForm: FC<UtilityFormProps> = ({ defaultValues, onCancel }) => {
   const [errors, setErrors] = useState<string[]>([]);
-  const { register, handleSubmit } = useForm<UtilityItem>({
+  const { register, handleSubmit, setValue, getValues } = useForm<UtilityItem>({
     defaultValues,
   });
   const dispatch: AppDispatch = useDispatch();
 
-  const handleSubmitSuccess = () => {
-    setErrors([]);
-    dispatch(actions.getAllUtilities());
-    onCancel && onCancel();
-  };
-
-  const handleSubmitError = (err: Error | AxiosError) => {
-    if (axios.isAxiosError(err)) {
-      setErrors(err.response?.data.message.errors);
+  const handleModalClose = (errors: string[]) => {
+    setErrors(errors);
+    if (errors.length === 0) {
+      dispatch(actions.getAllUtilities());
+      onCancel && onCancel();
     }
   };
 
-  const onSubmit: SubmitHandler<UtilityItem> = async (data) => {
-    console.log(data);
+  const { onSubmit } = useFormData({
+    apiUrl: 'utility',
+    defaultValues,
+    onResponse: handleModalClose,
+  });
 
-    const url = defaultValues
-      ? `${api_server_url}/api/utility/${defaultValues.name}`
-      : `${api_server_url}/api/utility`;
-
-    try {
-      defaultValues ? await axios.put(url, data) : await axios.post(url, data);
-
-      handleSubmitSuccess();
-    } catch (err: any) {
-      handleSubmitError(err);
-    }
+  const handleIconSelection = (value: iconsType | null) => {
+    setValue('icon', value || 'Circle');
   };
 
   return (
@@ -72,14 +62,23 @@ const UtilityForm: FC<UtilityFormProps> = ({ defaultValues, onCancel }) => {
           variant='standard'
           {...register('name', { required: true })}
         />
-        <FormControlLabel
-          control={<Checkbox {...register('isCountable')} />}
-          label='Measurable'
-        />
         <TextField
           label='Comment'
           variant='standard'
           {...register('comment')}
+        />
+        <IconPicker
+          onSelect={handleIconSelection}
+          defaultValue={defaultValues?.icon}
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              {...register('isCountable')}
+              checked={getValues('isCountable')}
+            />
+          }
+          label='Measurable'
         />
         <Collapse in={errors.length > 0}>
           {errors.map((error: any) => (
@@ -97,6 +96,17 @@ const UtilityForm: FC<UtilityFormProps> = ({ defaultValues, onCancel }) => {
           >
             Save
           </Button>
+          {defaultValues && (
+            <Button
+              type='button'
+              variant='outlined'
+              startIcon={<Delete />}
+              sx={{ width: '50%' }}
+              onClick={onCancel}
+            >
+              Delete
+            </Button>
+          )}
           {onCancel && (
             <Button
               type='button'

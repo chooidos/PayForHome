@@ -7,18 +7,18 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
+  ListItemText,
   Modal,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Add, Edit } from '@mui/icons-material';
-import * as icons from '@mui/icons-material';
-import React from 'react';
 
 import { actions, selectors } from '../../modules/utilities/store';
 import { AppDispatch } from '../../store';
-import UtilityForm from '../UtilityForm/UtilityForm';
+import UtilityForm from '../../components/UtilityForm/UtilityForm';
 import { UtilityItem } from '../../modules/utilities/types/utility';
+import { renderIcon } from '../../components/IconPicker/IconPicker';
 
 const UtilitiesBoard = ({}) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -26,24 +26,25 @@ const UtilitiesBoard = ({}) => {
   const [editedUtility, setEditedUtility] = useState<UtilityItem | undefined>(
     undefined,
   );
+  const utilitiesList = useSelector(selectors.selectUtility);
+  const utilitiesListArr = utilitiesList ? Object.keys(utilitiesList) : [];
+  const dispatch: AppDispatch = useDispatch();
 
   const handleCancelEdit = () => {
-    setEditedUtility(undefined);
     setIsFormOpen(false);
+    setTimeout(() => {
+      setEditedUtility(undefined);
+    }, 100);
   };
-
-  const dispatch: AppDispatch = useDispatch();
-  const utilitiesList = useSelector(selectors.selectUtility);
-
-  const utilitiesListArr = utilitiesList ? Object.keys(utilitiesList) : [];
 
   useEffect(() => {
     dispatch(actions.getAllUtilities());
   }, []);
 
-  const [selectedIcon, setSelectedIcon] = useState<React.ReactNode | null>(
-    null,
-  );
+  const handleOpenEditModal = (utility: string) => {
+    setEditedUtility(utilitiesList[utility]);
+    setIsFormOpen(true);
+  };
 
   return (
     <>
@@ -51,12 +52,6 @@ const UtilitiesBoard = ({}) => {
         variant='contained'
         startIcon={<Add />}
         onClick={() => setIsFormOpen(true)}
-        // sx={{
-        //   position: 'fixed',
-        //   bottom: '20px',
-        //   right: '20px',
-        //   zIndex: 100,
-        // }}
       >
         Add
       </Button>
@@ -65,12 +60,28 @@ const UtilitiesBoard = ({}) => {
           <ListItem
             key={utility}
             secondaryAction={
-              <IconButton edge='end'>
+              <IconButton
+                edge='end'
+                onClick={() => handleOpenEditModal(utility)}
+              >
                 <Edit />
               </IconButton>
             }
           >
-            {utilitiesList[utility].name}
+            <ListItemButton>
+              <ListItemIcon>
+                {renderIcon(utilitiesList[utility].icon || 'Circle')}
+              </ListItemIcon>
+              <ListItemText primary={utilitiesList[utility].name} />
+              <ListItemText primary={utilitiesList[utility].comment} />
+              <ListItemIcon>
+                {renderIcon(
+                  utilitiesList[utility].isCountable
+                    ? 'Speed'
+                    : 'CalendarMonth',
+                )}
+              </ListItemIcon>
+            </ListItemButton>
           </ListItem>
         ))}
       </List>
@@ -91,7 +102,7 @@ const UtilitiesBoard = ({}) => {
           >
             <UtilityForm
               onCancel={handleCancelEdit}
-              // defaultValues={editedRealty}
+              defaultValues={editedUtility}
             />
           </Box>
         </Fade>

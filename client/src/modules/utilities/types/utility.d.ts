@@ -1,7 +1,10 @@
+import { iconsType } from '../../../components/IconPicker/IconPicker';
+
 export interface UtilityItem {
+  id: string;
   name: string;
   isCountable: boolean;
   isDeleted: boolean;
-  icon: string;
+  icon: iconsType;
   comment: string;
 }

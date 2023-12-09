@@ -4,14 +4,14 @@ import {
   Card,
   CardActions,
   CardContent,
-  Chip,
   IconButton,
   Stack,
   Typography,
 } from '@mui/material';
-import { Bolt, Delete, Edit, Info, Save } from '@mui/icons-material';
+import { Delete, Edit, Info } from '@mui/icons-material';
 
 import { RealtyItem } from '../../modules/realty/types/realty';
+import RealtyUtilitiesList from '../RealtyUtilitiesList/RealtyUtilitiesList';
 
 interface RealtyInfoCardProps {
   realty: RealtyItem;
@@ -34,7 +34,7 @@ const RealtyInfoCard: FC<RealtyInfoCardProps> = ({
           direction='column'
           justifyContent='space-between'
           spacing={2}
-          sx={{ height: '200px' }}
+          sx={{ minHeight: '200px' }}
         >
           <Box>
             <Typography gutterBottom variant='h5' component='div'>
@@ -44,9 +44,7 @@ const RealtyInfoCard: FC<RealtyInfoCardProps> = ({
             {renderProperty('City', realty.city || 'not set')}
             {renderProperty('Address', realty.address || 'not set')}
           </Box>
-          <Stack spacing={0.5} direction='row' useFlexGap flexWrap='wrap'>
-            <Chip color='primary' icon={<Bolt />} label='asdasd' />
-          </Stack>
+          <RealtyUtilitiesList realty={realty} />
         </Stack>
       </CardContent>
       <CardActions>

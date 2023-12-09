@@ -1,11 +1,9 @@
 import { FC, useState } from 'react';
-import axios, { AxiosError } from 'axios';
 import { Cancel, Save } from '@mui/icons-material';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import {
   Alert,
   Button,
-  CardContent,
   Collapse,
   Stack,
   TextField,
@@ -14,8 +12,8 @@ import {
 import { useDispatch } from 'react-redux';
 
 import CountrySelector from '../CountrySelector/CountrySelector';
-import { api_server_url } from '../../shared/constants/serverType';
 import { RealtyItem } from '../../modules/realty/types/realty';
+import useFormData from '../../modules/hooks/network/useFormData';
 import { actions } from '../../modules/realty/store';
 import { AppDispatch } from '../../store';
 
@@ -31,31 +29,19 @@ const RealtyForm: FC<RealtyFormProps> = ({ defaultValues, onCancel }) => {
   });
   const dispatch: AppDispatch = useDispatch();
 
-  const handleSubmitSuccess = () => {
-    setErrors([]);
-    dispatch(actions.getAllRealty());
-    onCancel && onCancel();
-  };
-
-  const handleSubmitError = (err: Error | AxiosError) => {
-    if (axios.isAxiosError(err)) {
-      setErrors(err.response?.data.message.errors);
+  const handleModalClose = (errors: string[]) => {
+    setErrors(errors);
+    if (errors.length === 0) {
+      dispatch(actions.getAllRealty());
+      onCancel && onCancel();
     }
   };
 
-  const onSubmit: SubmitHandler<RealtyItem> = async (data) => {
-    const url = defaultValues
-      ? `${api_server_url}/api/realty/${defaultValues.name}`
-      : `${api_server_url}/api/realty`;
-
-    try {
-      defaultValues ? await axios.put(url, data) : await axios.post(url, data);
-
-      handleSubmitSuccess();
-    } catch (err: any) {
-      handleSubmitError(err);
-    }
-  };
+  const { onSubmit } = useFormData({
+    apiUrl: 'realty',
+    defaultValues,
+    onResponse: handleModalClose,
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

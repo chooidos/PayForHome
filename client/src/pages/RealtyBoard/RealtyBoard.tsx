@@ -12,8 +12,8 @@ import { Add } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
-import RealtyInfoCard from '../RealtyInfoCard/RealtyInfoCard';
-import RealtyForm from '../RealtyForm/RealtyForm';
+import RealtyInfoCard from '../../components/RealtyInfoCard/RealtyInfoCard';
+import RealtyForm from '../../components/RealtyForm/RealtyForm';
 import { actions, selectors } from '../../modules/realty/store';
 import { RealtyItem } from '../../modules/realty/types/realty';
 import { api_server_url } from '../../shared/constants/serverType';
@@ -60,7 +60,7 @@ const RealtyBoard: React.FC<any> = (props) => {
   const handleDeleteRealty = async () => {
     deleteRealtyItem &&
       axios
-        .delete(`${api_server_url}/api/realty/${deleteRealtyItem.id}`)
+        .delete(`${api_server_url}/api/realty/${deleteRealtyItem.name}`)
         .then((res) => {
           if (res.status === 200) {
             handleModalCancelDelete();

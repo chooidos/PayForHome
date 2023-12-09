@@ -4,7 +4,11 @@ import db from '../models';
 import { UtilityAttributes } from '../models/utility';
 
 export const getAllUtilities = async (req: Request, res: Response) => {
-  db.Utility.findAll({ attributes: { exclude: ['id'] } })
+  db.Utility.findAll({
+    where: {
+      isDeleted: false,
+    },
+  })
     .then((utilities: UtilityAttributes[]) => {
       res.status(200).json([...utilities]);
     })
@@ -14,11 +18,19 @@ export const getAllUtilities = async (req: Request, res: Response) => {
 };
 
 export const addUtility = async (req: Request, res: Response) => {
-  const { name, isCountable, comment }: UtilityAttributes = req.body;
+  const {
+    name,
+    isCountable,
+    isDeleted = false,
+    icon,
+    comment,
+  }: UtilityAttributes = req.body;
 
   db.Utility.create({
     name,
     isCountable,
+    isDeleted,
+    icon,
     comment,
   })
     .then(() =>
@@ -37,7 +49,7 @@ export const editUtility = async (req: Request, res: Response) => {
     icon,
     comment,
   }: UtilityAttributes = req.body;
-  const editUtilityName = req.params.name;
+  const editUtilityId = req.params.id;
 
   db.Utility.update(
     {
@@ -49,7 +61,7 @@ export const editUtility = async (req: Request, res: Response) => {
     },
     {
       where: {
-        name: editUtilityName,
+        id: editUtilityId,
       },
     },
   )
