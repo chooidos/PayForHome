@@ -37,10 +37,6 @@ const UtilitiesBoard = ({}) => {
     }, 100);
   };
 
-  useEffect(() => {
-    dispatch(actions.getAllUtilities());
-  }, []);
-
   const handleOpenEditModal = (utility: string) => {
     setEditedUtility(utilitiesList[utility]);
     setIsFormOpen(true);
@@ -74,6 +70,9 @@ const UtilitiesBoard = ({}) => {
               </ListItemIcon>
               <ListItemText primary={utilitiesList[utility].name} />
               <ListItemText primary={utilitiesList[utility].comment} />
+              <ListItemText
+                primary={`${utilitiesList[utility].price}/${utilitiesList[utility].units}`}
+              />
               <ListItemIcon>
                 {renderIcon(
                   utilitiesList[utility].isCountable

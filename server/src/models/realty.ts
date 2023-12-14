@@ -1,6 +1,6 @@
-import { Sequelize } from "sequelize";
-import { Model, UUIDV4 } from "sequelize";
-import { dbI } from ".";
+import { Sequelize } from 'sequelize';
+import { Model, UUIDV4 } from 'sequelize';
+import { dbI } from '.';
 
 export interface RealtyAttributes {
   id: string;
@@ -27,7 +27,7 @@ const Realty = (sequelize: Sequelize, DataTypes: any) => {
     static associate(models: dbI) {
       // define association here
       Realty.belongsToMany(models.Utility, {
-        through: "RealtyUtilityAssignment",
+        through: 'RealtyUtilityAssignment',
       });
     }
   }
@@ -56,7 +56,7 @@ const Realty = (sequelize: Sequelize, DataTypes: any) => {
     },
     {
       sequelize,
-      modelName: "Realty",
+      modelName: 'Realty',
     },
   );
 

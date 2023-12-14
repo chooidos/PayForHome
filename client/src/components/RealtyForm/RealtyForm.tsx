@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
-import CountrySelector from '../CountrySelector/CountrySelector';
+import CountryPicker from '../CountryPicker/CountryPicker';
 import { RealtyItem } from '../../modules/realty/types/realty';
 import useFormData from '../../modules/hooks/network/useFormData';
 import { actions } from '../../modules/realty/store';
@@ -56,7 +56,7 @@ const RealtyForm: FC<RealtyFormProps> = ({ defaultValues, onCancel }) => {
           variant='standard'
           {...register('name', { required: true })}
         />
-        <CountrySelector
+        <CountryPicker
           {...register('country')}
           defaultValue={defaultValues?.country}
         />

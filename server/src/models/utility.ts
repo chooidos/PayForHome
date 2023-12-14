@@ -5,6 +5,8 @@ export interface UtilityAttributes {
   id: string;
   name: string;
   isCountable: boolean;
+  units: string;
+  price: number;
   isDeleted: boolean;
   icon: string;
   comment: string;
@@ -21,6 +23,8 @@ const Utility = (sequelize: Sequelize, DataTypes: any) => {
     id!: string;
     name!: string;
     isCountable!: boolean;
+    price!: number;
+    units: string;
     isDeleted!: boolean;
     icon: string;
     comment: string;
@@ -58,6 +62,12 @@ const Utility = (sequelize: Sequelize, DataTypes: any) => {
         type: DataTypes.STRING,
       },
       comment: {
+        type: DataTypes.STRING,
+      },
+      price: {
+        type: DataTypes.DECIMAL,
+      },
+      units: {
         type: DataTypes.STRING,
       },
     },

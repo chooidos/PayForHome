@@ -4,7 +4,13 @@ import { RealtyAttributes } from './../models/realty';
 import db from './../models';
 
 export const getAllRealty = async (req: Request, res: Response) => {
-  db.Realty.findAll()
+  db.Realty.findAll({
+    include: [
+      {
+        model: db.Utility,
+      },
+    ],
+  })
     .then((realty: RealtyAttributes[]) => {
       res.status(200).json([...realty]);
     })
@@ -76,7 +82,7 @@ export const assignUtility = async (req: Request, res: Response) => {
   const { realtyId } = req.body;
 
   try {
-    const realtyUtility = await db.realtyUtilityAssignment.findOne({
+    const realtyUtility = await db.RealtyUtilityAssignment.findOne({
       where: {
         UtilityId: utilityId,
         RealtyId: realtyId,
@@ -84,7 +90,7 @@ export const assignUtility = async (req: Request, res: Response) => {
     });
     const utility = await db.Utility.findOne({
       where: {
-        id: realtyId,
+        id: utilityId,
       },
     });
     if (!utility) {
@@ -94,7 +100,7 @@ export const assignUtility = async (req: Request, res: Response) => {
       return res.status(400).send({ err: 'utility is deleted' });
     }
     if (!realtyUtility) {
-      await db.realtyUtilityAssignment.create({
+      await db.RealtyUtilityAssignment.create({
         UtilityId: utilityId,
         RealtyId: realtyId,
       });
@@ -109,10 +115,9 @@ export const removeUtility = (req: Request, res: Response) => {
   const { id: utilityId } = req.params;
   const { realtyId } = req.body;
 
-  db.realtyUtilityAssignment
-    .findOne({
-      where: { UtilityId: utilityId, RealtyId: realtyId },
-    })
+  db.RealtyUtilityAssignment.findOne({
+    where: { UtilityId: utilityId, RealtyId: realtyId },
+  })
     .then((realtyUtility) => {
       if (realtyUtility) {
         return realtyUtility.destroy();

@@ -5,6 +5,8 @@ export interface UtilityItem {
   name: string;
   isCountable: boolean;
   isDeleted: boolean;
+  units?: string;
+  price: number;
   icon: iconsType;
   comment: string;
 }

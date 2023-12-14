@@ -3,7 +3,7 @@ import { Autocomplete, Box, TextField } from '@mui/material';
 
 import { CountryType, countries } from '../../shared/constants/countries';
 
-const CountrySelector = forwardRef((props: any, ref) => {
+const CountryPicker = forwardRef((props: any, ref) => {
   const { defaultValue: propDefValue, ...others } = props;
 
   const defaultValue = useMemo(
@@ -54,4 +54,4 @@ const CountrySelector = forwardRef((props: any, ref) => {
   );
 });
 
-export default CountrySelector;
+export default CountryPicker;

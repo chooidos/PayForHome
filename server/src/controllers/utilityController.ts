@@ -22,6 +22,8 @@ export const addUtility = async (req: Request, res: Response) => {
     name,
     isCountable,
     isDeleted = false,
+    units,
+    price,
     icon,
     comment,
   }: UtilityAttributes = req.body;
@@ -30,6 +32,8 @@ export const addUtility = async (req: Request, res: Response) => {
     name,
     isCountable,
     isDeleted,
+    units,
+    price,
     icon,
     comment,
   })
@@ -46,6 +50,8 @@ export const editUtility = async (req: Request, res: Response) => {
     name,
     isCountable,
     isDeleted = false,
+    units,
+    price,
     icon,
     comment,
   }: UtilityAttributes = req.body;
@@ -56,6 +62,8 @@ export const editUtility = async (req: Request, res: Response) => {
       name,
       isCountable,
       isDeleted,
+      units,
+      price,
       icon,
       comment,
     },

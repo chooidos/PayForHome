@@ -5,6 +5,7 @@ import {
   editRealty,
   getAllRealty,
   removeRealty,
+  removeUtility,
 } from './../controllers/realtyController';
 
 const realtyRouter = express.Router();
@@ -14,6 +15,6 @@ realtyRouter.post('/', addRealty);
 realtyRouter.put('/:id', editRealty);
 realtyRouter.delete('/:id', removeRealty);
 realtyRouter.post('/add-utility/:id', assignUtility);
-realtyRouter.delete('/delete-utility/:id', addRealty);
+realtyRouter.put('/delete-utility/:id', removeUtility);
 
 export default realtyRouter;

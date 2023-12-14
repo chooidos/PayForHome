@@ -3,6 +3,7 @@ import { Cancel, Delete, Save } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import {
   Alert,
+  Box,
   Button,
   Checkbox,
   Collapse,
@@ -67,6 +68,15 @@ const UtilityForm: FC<UtilityFormProps> = ({ defaultValues, onCancel }) => {
           variant='standard'
           {...register('comment')}
         />
+        <Stack direction='row' alignItems='baseline'>
+          <TextField
+            label='Price'
+            variant='standard'
+            {...register('price', { valueAsNumber: true })}
+          />
+          <Box px={2}>per</Box>
+          <TextField label='Units' variant='standard' {...register('units')} />
+        </Stack>
         <IconPicker
           onSelect={handleIconSelection}
           defaultValue={defaultValues?.icon}
