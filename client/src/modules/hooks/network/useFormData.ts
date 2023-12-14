@@ -4,6 +4,7 @@ import { SubmitHandler } from 'react-hook-form';
 import { UtilityItem } from '../../utilities/types/utility';
 import { api_server_url } from '../../../shared/constants/serverType';
 import { RealtyItem } from '../../realty/types/realty';
+import { UtilityPaymentItem } from '../../payments/types/utilityPayment';
 
 interface UseFormDataProps {
   apiUrl: string;
@@ -26,7 +27,9 @@ const useFormData = ({
     }
   };
 
-  const onSubmit: SubmitHandler<UtilityItem | RealtyItem> = async (data) => {
+  const onSubmit: SubmitHandler<
+    UtilityItem | RealtyItem | UtilityPaymentItem
+  > = async (data) => {
     const url = defaultValues
       ? `${api_server_url}/api/${apiUrl}/${defaultValues.id}`
       : `${api_server_url}/api/${apiUrl}`;

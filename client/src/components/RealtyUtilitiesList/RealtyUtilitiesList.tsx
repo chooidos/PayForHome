@@ -11,6 +11,7 @@ import { FC, useState } from 'react';
 import { Add } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 import { RealtyItem } from '../../modules/realty/types/realty';
 import { renderIcon } from '../IconPicker/IconPicker';
@@ -29,6 +30,8 @@ const RealtyUtilitiesList: FC<RealtyUtilitiesListProps> = ({ realty }) => {
   const [selectedUtility, setSelectedUtility] = useState<UtilityItem | null>(
     null,
   );
+
+  const navigate = useNavigate();
 
   const dispatch: AppDispatch = useDispatch();
 
@@ -59,17 +62,26 @@ const RealtyUtilitiesList: FC<RealtyUtilitiesListProps> = ({ realty }) => {
       .catch((err) => console.log(err));
   };
 
+  const utilitiesListArr = realty.utilities
+    ? Object.keys(realty.utilities)
+    : [];
+
   return (
     <Stack spacing={1}>
       <Typography variant='body2'>Utilities</Typography>
       <Stack spacing={0.5} direction='row' useFlexGap flexWrap='wrap'>
-        {realty.Utilities?.map((utility) => (
+        {utilitiesListArr.map((utility) => (
           <Chip
-            key={utility.id}
+            key={utility}
             color='primary'
-            icon={renderIcon(utility.icon)}
-            label={utility.name}
-            onDelete={() => handleRemoveUtility(utility.id)}
+            icon={renderIcon(realty.utilities[utility].icon)}
+            label={utility}
+            onClick={() =>
+              navigate(
+                `/realty/${realty.name}/${realty.utilities[utility].name}`,
+              )
+            }
+            onDelete={() => handleRemoveUtility(realty.utilities[utility].id)}
           />
         ))}
         <Chip

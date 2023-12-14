@@ -1,22 +1,50 @@
 import { Response, Request } from 'express';
-import { RealtyAttributes } from './../models/realty';
 
 import db from './../models';
+import { RealtyAttributes } from './../models/realty';
+import { UtilityAttributes } from '../models/utility';
 
 export const getAllRealty = async (req: Request, res: Response) => {
-  db.Realty.findAll({
-    include: [
-      {
-        model: db.Utility,
-      },
-    ],
-  })
-    .then((realty: RealtyAttributes[]) => {
-      res.status(200).json([...realty]);
-    })
-    .catch((err: Error) => {
-      res.status(500).json({ error: err });
+  try {
+    const realtyList = await db.Realty.findAll({
+      include: [
+        {
+          model: db.Utility,
+        },
+      ],
     });
+
+    const formattedRealtyList = realtyList.map((realty: RealtyAttributes) => {
+      const utilitiesObject: { [key: string]: any } = {};
+
+      realty.Utilities.forEach((utility: UtilityAttributes) => {
+        utilitiesObject[utility.name] = {
+          id: utility.id,
+          name: utility.name,
+          isCountable: utility.isCountable,
+          units: utility.units,
+          price: utility.price,
+          isDeleted: utility.isDeleted,
+          icon: utility.icon,
+          comment: utility.comment,
+        };
+      });
+
+      return {
+        id: realty.id,
+        name: realty.name,
+        country: realty.country,
+        city: realty.city,
+        address: realty.address,
+        utilities: utilitiesObject,
+      };
+    });
+
+    res.status(200).json(formattedRealtyList);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 };
 
 export const addRealty = async (req: Request, res: Response) => {

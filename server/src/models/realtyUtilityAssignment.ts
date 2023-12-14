@@ -23,6 +23,7 @@ const RealtyUtilityAssignment = (sequelize: any, DataTypes: any) => {
 
     static associate(models: any) {
       // define association here
+      RealtyUtilityAssignment.hasMany(models.UtilityPayment);
     }
   }
   RealtyUtilityAssignment.init(

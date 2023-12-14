@@ -1,15 +1,16 @@
-import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { Box, CssBaseline, ThemeProvider } from '@mui/material';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { createContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import RealtyBoard from './components/RealtyBoard/RealtyBoard';
+import RealtyBoard from './pages/RealtyBoard/RealtyBoard';
 import AppBar from './components/AppBar/App.Bar';
 import UtilitiesBoard from './pages/UtilitiesBoard/UtilitiesBoard';
 import useTheme from './modules/hooks/ui/useTheme';
 import { actions as realtyActions } from './modules/realty/store';
 import { AppDispatch } from './store';
 import { actions as utilityActions } from './modules/utilities/store';
+import PaymentsBoard from './pages/PaymentsBoard/PaymentsBoard';
 
 export const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
@@ -33,6 +34,10 @@ function App() {
               <Routes>
                 <Route path='/' element={<div>nnn</div>}></Route>
                 <Route path='/realty' element={<RealtyBoard />}></Route>
+                <Route
+                  path='/realty/:realtyName/:utilityName'
+                  element={<PaymentsBoard />}
+                ></Route>
                 <Route path='/utilities' element={<UtilitiesBoard />}></Route>
               </Routes>
             </AppBar>

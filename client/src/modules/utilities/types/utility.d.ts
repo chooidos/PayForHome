@@ -9,4 +9,5 @@ export interface UtilityItem {
   price: number;
   icon: iconsType;
   comment: string;
+  payments?: UtilityPaymentItem[];
 }

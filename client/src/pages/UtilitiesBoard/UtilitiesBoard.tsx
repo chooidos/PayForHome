@@ -28,7 +28,6 @@ const UtilitiesBoard = ({}) => {
   );
   const utilitiesList = useSelector(selectors.selectUtility);
   const utilitiesListArr = utilitiesList ? Object.keys(utilitiesList) : [];
-  const dispatch: AppDispatch = useDispatch();
 
   const handleCancelEdit = () => {
     setIsFormOpen(false);

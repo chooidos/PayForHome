@@ -6,5 +6,5 @@ export interface RealtyItem {
   country?: string;
   city?: string;
   address?: string;
-  Utilities?: UtilityItem[];
+  utilities: Record<string, UtilityItem>;
 }

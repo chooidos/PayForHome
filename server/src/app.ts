@@ -4,6 +4,7 @@ import cors from 'cors';
 import { sequelize } from './models';
 import realtyRouter from './routes/realtyRoute';
 import utilityRouter from './routes/utilityRoute';
+import utilityPaymentRouter from './routes/utilityPaymentRoute';
 
 const app: Application = express();
 
@@ -18,6 +19,7 @@ app.use(
 
 app.use('/api/realty', realtyRouter);
 app.use('/api/utility', utilityRouter);
+app.use('/api/utilityPaiment', utilityPaymentRouter);
 
 const PORT = process.env.SERVER_PORT || 5000;
 

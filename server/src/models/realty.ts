@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize';
 import { Model, UUIDV4 } from 'sequelize';
 import { dbI } from '.';
+import { UtilityAttributes } from './utility';
 
 export interface RealtyAttributes {
   id: string;
@@ -8,6 +9,7 @@ export interface RealtyAttributes {
   country?: string;
   city?: string;
   address?: string;
+  Utilities?: UtilityAttributes[];
 }
 
 const Realty = (sequelize: Sequelize, DataTypes: any) => {
